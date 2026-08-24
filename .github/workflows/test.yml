@@ -18,3 +18,47 @@ jobs:
         with:
           python-version: "3.12"
       - run: ./doit.sh
+
+  android-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - name: Build demo APK
+        run: |
+          ./android/build-apk.sh
+          test -s build/DualDBAdmin.apk
+          unzip -tq build/DualDBAdmin.apk
+          cp build/DualDBAdmin.apk build/DualDBAdmin-1.0.10-demo.apk
+          sha256sum build/DualDBAdmin-1.0.10-demo.apk > build/DualDBAdmin-1.0.10-demo.apk.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DualDBAdmin-1.0.10-demo
+          path: |
+            build/DualDBAdmin-1.0.10-demo.apk
+            build/DualDBAdmin-1.0.10-demo.apk.sha256
+          if-no-files-found: error
+      - name: Publish demo APK release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > build/release-notes.md <<'NOTES'
+          Demonstration Android console for DualDB-Admin.
+
+          This APK is a native WebView client for a trusted DualDB-Admin PHP server. It does not bundle PHP, MySQL, SQLite server data, TLS, authentication, credentials, or a public service. Do not expose an unauthenticated admin server to the public internet.
+          NOTES
+          if gh release view android-v1.0.10 >/dev/null 2>&1; then
+            gh release upload android-v1.0.10 build/DualDBAdmin-1.0.10-demo.apk build/DualDBAdmin-1.0.10-demo.apk.sha256 --clobber
+          else
+            gh release create android-v1.0.10 build/DualDBAdmin-1.0.10-demo.apk build/DualDBAdmin-1.0.10-demo.apk.sha256 --title "DualDB Admin Android 1.0.10 Demo" --notes-file build/release-notes.md
+          fi

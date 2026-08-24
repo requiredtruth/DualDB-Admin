@@ -3,7 +3,7 @@
 DualDB-Admin is a single-file PHP SQLite/MySQL administration tool with the same entry point for a responsive web UI and structured CLI. The repository also includes a native Android WebView console for administering a trusted local or self-hosted instance from a phone or tablet.
 
 ```sh
-./doit.sh
+./install.sh
 ```
 
 No Composer, framework, Docker image, or JavaScript package installation is used.

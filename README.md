@@ -73,6 +73,8 @@ The Android project uses native Java, compile/target SDK 35, minimum SDK 19, and
 
 The script uses a local Gradle installation when available, otherwise it can build with installed Android SDK `aapt`, `d8`, and `apksigner` tools. The generated debug signing key is temporary, randomly protected, and never retained. Output is `build/DualDBAdmin.apk`.
 
+A tested demonstration APK and its SHA-256 checksum are published under [GitHub Releases](../../releases). The Android demo is only a client console: it requires a trusted DualDB-Admin PHP server and does not bundle PHP, database credentials, TLS, authentication, or a public service.
+
 The APK is the phone interface, not a PHP runtime. Run the PHP application locally in a phone terminal environment or point the app at a trusted self-hosted instance. URL user information is rejected; do not place database credentials in a URL.
 
 ## Limitations and safety

@@ -1,0 +1,27 @@
+name: Funded direction request
+description: Prove a donation publicly and request priority for a compatible DualDB-Admin direction
+title: "[funded direction] "
+labels: ["funded-direction"]
+body:
+  - type: markdown
+    attributes:
+      value: Donations may request prioritization, but do not buy support, ownership, returns, deadlines, or guaranteed implementation. The first valid public claim for an unclaimed transaction hash is considered.
+  - type: dropdown
+    id: asset
+    attributes:
+      label: Asset and exact network
+      options: [Bitcoin mainnet, Ethereum/EVM network, Dogecoin mainnet]
+    validations:
+      required: true
+  - type: input
+    id: hash
+    attributes:
+      label: Public transaction hash
+    validations:
+      required: true
+  - type: textarea
+    id: direction
+    attributes:
+      label: Requested direction and acceptance checks
+    validations:
+      required: true

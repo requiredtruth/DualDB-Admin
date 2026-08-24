@@ -1,0 +1,7 @@
+/data/*.sqlite*
+/config.php
+/android/.gradle/
+/android/app/build/
+/build/
+*.apk
+__pycache__/

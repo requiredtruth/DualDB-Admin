@@ -1,0 +1,19 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'org.dualdb.admin'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'org.dualdb.admin'
+        minSdk 19
+        targetSdk 35
+        versionCode 10
+        versionName '1.0.10'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}

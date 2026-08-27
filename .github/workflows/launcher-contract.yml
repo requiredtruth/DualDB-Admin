@@ -1,0 +1,30 @@
+name: launcher-contract
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-launcher:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify standard scripts
+        run: |
+          test -f install.sh
+          test -f run.sh
+          test -f cli.sh
+          test -f project_gui.py
+          test ! -f doit.sh
+          bash -n install.sh run.sh cli.sh
+          python -m py_compile project_gui.py
+          grep -q 'install.sh' run.sh
+          grep -q 'project_gui.py' run.sh
+          grep -qi 'PySide6' install.sh
+          grep -q 'cli.sh' README.md
